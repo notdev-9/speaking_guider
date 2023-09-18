@@ -13,14 +13,17 @@ import pathlib
 AUDIO_FOLDER = 'audio-files'
 TRANSCRIBED_FOLDER = 'transcribed-files'
 
+def createFolderIfNotExist(folderName: str):
+    if not os.path.exists(folderName):
+        os.mkdir(folderName)
+        print(f"Folder '{folderName}' created successfully.")
+
 def getEquivalentTextFileName(audioFileName: str) -> str:
     return ''.join(audioFileName.split('.')[:-1]) + '.txt'
 
 def writeTranscribedTextToFile(text: str, audioFileName: str, \
     folderName: str = TRANSCRIBED_FOLDER):
-    if not os.path.exists(folderName):
-        os.mkdir(folderName)
-        print(f"Folder '{folderName}' created successfully.")
+    createFolderIfNotExist(folderName)
     # split and remove the right most strings after the last '.' and add 'txt'
     # e.g. 'abc.zxc.sedew' => 'abc.zxc.txt'
     fileName = getEquivalentTextFileName(audioFileName)
@@ -29,9 +32,7 @@ def writeTranscribedTextToFile(text: str, audioFileName: str, \
 
 def main():
     # create TRANSCRIBED_FOLDER if not exist
-    if not os.path.exists(TRANSCRIBED_FOLDER):
-        os.mkdir(TRANSCRIBED_FOLDER)
-        print(f"Folder '{TRANSCRIBED_FOLDER}' created successfully.")
+    createFolderIfNotExist(TRANSCRIBED_FOLDER)
 
     st.title("💡AI-powered apps for IELTS")
     # Upload section
@@ -53,7 +54,6 @@ def main():
                 with open(file_path, "r") as f:
                     # Read the entire content of the file
                     file_content = f.read()
-                    # Print or process the file content as needed
                     print(
                         f'Read {uploaded_file.name} from FOLDER={TRANSCRIBED_FOLDER}'
                     )
